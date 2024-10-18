@@ -1,38 +1,22 @@
+import { createPublicClient, http } from 'viem'
+import { mainnet } from 'viem/chains'
 
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-
-async function getter() {
-  const data = await fetch("https://jsonplaceholder.typicode.com/posts/");
-  const response = await data.json();
-  return response;
-}
+const client = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+})
 
 function App() {
-  const queryClient = new QueryClient();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Posts />
-    </QueryClientProvider>
-  );
-}
-
-function Posts() {
-  const { data, isLoading, error } = useQuery({ queryKey: ["posts"], queryFn: getter });
-
-  if (error) {
-    return <div>Error while fetching</div>;
-  }
-
-  if (isLoading) {
-    return <div>Loading. . .</div>;
+  async function getBalance() {
+    const balance = await client.getBalance({ address: "0x075c299cf3b9FCF7C9fD5272cd2ed21A4688bEeD" })
+    console.log(balance);
   }
 
   return (
     <div>
-      <ul>{data?.map((post) => <li key={post.id}>{post.title}</li>)}</ul>
-    </div>
-  );
+      <button onClick={getBalance}>Get Balance </button></div>
+
+  )
 }
 
 export default App;
