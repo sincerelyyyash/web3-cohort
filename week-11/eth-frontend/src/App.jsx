@@ -21,7 +21,7 @@ function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <div>
+        <div className='flex flex-col justify-center items-center'>
           <WalletConnector />
           <EthSend />
           <MyAddress />
